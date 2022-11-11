@@ -10,9 +10,12 @@ export class createTableUser1668049612534 implements MigrationInterface {
             "phone" character varying NOT NULL,
             "email" character varying NOT NULL,
             "password" character varying NOT NULL,
-            "role" common_role_enum NOT NULL DEFAULT 'USER',
+            "avatarPath" character varying NULL,
+            "gender" common_gender_enum NULL,
+            "avatarThumbnailPath" character varying NULL,
             "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updatedAt" TIMESTAMP NULL
+            "updatedAt" TIMESTAMP NULL,
+            "deletedAt" TIMESTAMP NULL,
         );
     `)
     }
@@ -20,7 +23,7 @@ export class createTableUser1668049612534 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
         DROP TABLE "user";
-    `)
+        `)
     }
 
 }

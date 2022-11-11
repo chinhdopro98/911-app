@@ -1,15 +1,19 @@
-import { BaseEntity } from "typeorm";
-import { IFullName, Role } from "src/auth/interface/register.interface";
-export declare class User extends BaseEntity {
-    id: number;
+import { CommonEntity } from "src/common/entity/common.entity";
+import { Gender } from "src/common/interfaces/common.interface";
+import { IFullName } from "src/auth/interface/register.interface";
+import { Interpreter } from "src/interpreters/entities/interpreter.entity";
+import { Customer } from "src/customers/entities/customer.entity";
+export declare class User extends CommonEntity {
     fullName: IFullName;
     phone: string;
     email: string;
     password: string;
-    role: Role;
-    createdAt: Date;
-    updatedAt: Date;
+    gender: Gender;
+    avatarPath: string;
+    avatarThumbnailPath: string;
     hashPassword(): Promise<void>;
     validatePassword(password: string): Promise<boolean>;
+    interpreter: Interpreter;
+    customer: Customer;
     constructor(Partial: Partial<User>);
 }

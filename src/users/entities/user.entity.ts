@@ -1,12 +1,13 @@
-import { BaseEntity, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToOne } from "typeorm";
 import * as bcrypt from 'bcrypt';
-import { IFullName, Role } from "src/auth/interface/register.interface";
+import { CommonEntity } from "src/common/entity/common.entity";
+import { Gender, Role } from "src/common/interfaces/common.interface";
+import { IFullName } from "src/auth/interface/register.interface";
+import { Interpreter } from "src/interpreters/entities/interpreter.entity";
+import { Customer } from "src/customers/entities/customer.entity";
 
 @Entity()
-export class User extends BaseEntity {
-
-	@PrimaryGeneratedColumn()
-	id!: number;
+export class User extends CommonEntity {
 
 	@Column({
 		type: 'json'
@@ -23,24 +24,25 @@ export class User extends BaseEntity {
 	password!: string;
 
 	@Column({
-		type: 'enum',
-		enum: Role,
-		default: Role.USER
+		type: "enum",
+		enum: Gender,
+		nullable: true,
 	})
-	role: Role
+	gender!: Gender;
+
 
 	@Column({
-		type: "timestamp",
-		default: () => "CURRENT_TIMESTAMP",
+		nullable: true,
 	})
-	createdAt!: Date;
+	avatarPath!: string;
 
 	@Column({
-		default: null
+		nullable: true
 	})
-	updatedAt!: Date;
+	avatarThumbnailPath!: string;
 
 	@BeforeInsert()
+	@BeforeUpdate()
 	async hashPassword() {
 		const salt = await bcrypt.genSalt();
 		this.password = await bcrypt.hash(this.password, salt);
@@ -48,9 +50,14 @@ export class User extends BaseEntity {
 
 	async validatePassword(password: string): Promise<boolean> {
 		const isMatch = await bcrypt.compare(password, this.password);
-
 		return isMatch;
 	}
+
+	@OneToOne(type => Interpreter, interpreter => interpreter.user)
+	interpreter!: Interpreter;
+
+	@OneToOne(type => Customer, customer => customer.user)
+	customer!: Customer;
 
 	constructor(Partial: Partial<User>) {
 		super();

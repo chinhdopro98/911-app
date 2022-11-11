@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCommon1668048907554 = void 0;
 class createCommon1668048907554 {
     async up(queryRunner) {
-        await queryRunner.query("CREATE TYPE \"common_role_enum\" AS ENUM('ADMIN', 'USER')");
+        await queryRunner.query("CREATE TYPE \"common_role_enum\" AS ENUM('ADMIN', 'CUSTOMER', 'INTERPRETER')");
+        await queryRunner.query("CREATE TYPE \"common_gender_enum\" AS ENUM('FEMALE', 'MALE')");
     }
     async down(queryRunner) {
         await queryRunner.query("DROP TYPE \"common_role_enum\"");
+        await queryRunner.query("DROP TYPE \"common_gender_enum\"");
     }
 }
 exports.createCommon1668048907554 = createCommon1668048907554;

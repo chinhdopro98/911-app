@@ -52,16 +52,16 @@ export class AuthService {
 	}
 
 	async register(payload: IRegister) {
-		const { fullName, phone, email, password } = payload;
+		const { fullName, phone, email, password, role } = payload;
 
 		const isEmailExits = await this.exitsEmail(email);
 		if (isEmailExits) {
-			throw new HttpException('Email already exists', 401);
+			throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
 		}
 
 		const isPhoneExits = await this.exitsPhone(phone);
 		if (isPhoneExits) {
-			throw new HttpException('Phone already exists', 401);
+			throw new HttpException('Phone already exists', HttpStatus.BAD_REQUEST);
 		}
 
 		const user = new User({ fullName, phone, email, password });
@@ -83,7 +83,7 @@ export class AuthService {
 		const user = await this.userRepository.findOne({
 			where: {
 				email,
-				id: +sub
+				id: sub
 			}
 		});
 		if (!user) {

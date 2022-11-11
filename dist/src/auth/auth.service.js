@@ -52,14 +52,14 @@ let AuthService = class AuthService {
         return !!user;
     }
     async register(payload) {
-        const { fullName, phone, email, password } = payload;
+        const { fullName, phone, email, password, role } = payload;
         const isEmailExits = await this.exitsEmail(email);
         if (isEmailExits) {
-            throw new common_1.HttpException('Email already exists', 401);
+            throw new common_1.HttpException('Email already exists', common_1.HttpStatus.BAD_REQUEST);
         }
         const isPhoneExits = await this.exitsPhone(phone);
         if (isPhoneExits) {
-            throw new common_1.HttpException('Phone already exists', 401);
+            throw new common_1.HttpException('Phone already exists', common_1.HttpStatus.BAD_REQUEST);
         }
         const user = new user_entity_1.User({ fullName, phone, email, password });
         await this.userRepository.createQueryBuilder("user")
@@ -77,7 +77,7 @@ let AuthService = class AuthService {
         const user = await this.userRepository.findOne({
             where: {
                 email,
-                id: +sub
+                id: sub
             }
         });
         if (!user) {

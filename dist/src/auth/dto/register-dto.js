@@ -13,6 +13,7 @@ exports.RegisterDTO = exports.IFullNameDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
+const common_interface_1 = require("../../common/interfaces/common.interface");
 class IFullNameDto {
 }
 __decorate([
@@ -54,5 +55,14 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegisterDTO.prototype, "password", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        enum: common_interface_1.Role,
+        isArray: true,
+        example: [common_interface_1.Role.CUSTOMER, common_interface_1.Role.INTERPRETER]
+    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], RegisterDTO.prototype, "role", void 0);
 exports.RegisterDTO = RegisterDTO;
 //# sourceMappingURL=register-dto.js.map

@@ -1,3 +1,4 @@
+import { Role } from "src/common/interfaces/common.interface";
 export interface IFullName {
     firstName: string;
     lastName: string;
@@ -7,8 +8,5 @@ export interface IRegister {
     phone: string;
     email: string;
     password: string;
-}
-export declare enum Role {
-    ADMIN = "admin",
-    USER = "user"
+    role: Role;
 }

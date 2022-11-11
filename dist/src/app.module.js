@@ -14,6 +14,8 @@ const app_service_1 = require("./app.service");
 const database_module_1 = require("./database/database.module");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
+const customers_module_1 = require("./customers/customers.module");
+const interpreters_module_1 = require("./interpreters/interpreters.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -24,7 +26,9 @@ AppModule = __decorate([
             }),
             database_module_1.DatabaseModule,
             users_module_1.UsersModule,
-            auth_module_1.AuthModule
+            auth_module_1.AuthModule,
+            customers_module_1.CustomersModule,
+            interpreters_module_1.InterpretersModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

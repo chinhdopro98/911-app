@@ -10,16 +10,19 @@ class createTableUser1668049612534 {
             "phone" character varying NOT NULL,
             "email" character varying NOT NULL,
             "password" character varying NOT NULL,
-            "role" common_role_enum NOT NULL DEFAULT 'USER',
+            "avatarPath" character varying NULL,
+            "gender" common_gender_enum NULL,
+            "avatarThumbnailPath" character varying NULL,
             "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updatedAt" TIMESTAMP NULL
+            "updatedAt" TIMESTAMP NULL,
+            "deletedAt" TIMESTAMP NULL,
         );
     `);
     }
     async down(queryRunner) {
         await queryRunner.query(`
         DROP TABLE "user";
-    `);
+        `);
     }
 }
 exports.createTableUser1668049612534 = createTableUser1668049612534;

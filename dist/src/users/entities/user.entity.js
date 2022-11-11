@@ -12,8 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const bcrypt = require("bcrypt");
-const register_interface_1 = require("../../auth/interface/register.interface");
-let User = class User extends typeorm_1.BaseEntity {
+const common_entity_1 = require("../../common/entity/common.entity");
+const common_interface_1 = require("../../common/interfaces/common.interface");
+const interpreter_entity_1 = require("../../interpreters/entities/interpreter.entity");
+const customer_entity_1 = require("../../customers/entities/customer.entity");
+let User = class User extends common_entity_1.CommonEntity {
     constructor(Partial) {
         super();
         Object.assign(this, Partial);
@@ -27,10 +30,6 @@ let User = class User extends typeorm_1.BaseEntity {
         return isMatch;
     }
 };
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'json'
@@ -51,31 +50,39 @@ __decorate([
 ], User.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'enum',
-        enum: register_interface_1.Role,
-        default: register_interface_1.Role.USER
+        type: "enum",
+        enum: common_interface_1.Gender,
+        nullable: true,
     }),
     __metadata("design:type", String)
-], User.prototype, "role", void 0);
+], User.prototype, "gender", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP",
+        nullable: true,
     }),
-    __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
+    __metadata("design:type", String)
+], User.prototype, "avatarPath", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        default: null
+        nullable: true
     }),
-    __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
+    __metadata("design:type", String)
+], User.prototype, "avatarThumbnailPath", void 0);
 __decorate([
     (0, typeorm_1.BeforeInsert)(),
+    (0, typeorm_1.BeforeUpdate)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], User.prototype, "hashPassword", null);
+__decorate([
+    (0, typeorm_1.OneToOne)(type => interpreter_entity_1.Interpreter, interpreter => interpreter.user),
+    __metadata("design:type", interpreter_entity_1.Interpreter)
+], User.prototype, "interpreter", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(type => customer_entity_1.Customer, customer => customer.user),
+    __metadata("design:type", customer_entity_1.Customer)
+], User.prototype, "customer", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)(),
     __metadata("design:paramtypes", [Object])

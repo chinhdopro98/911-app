@@ -1,7 +1,8 @@
-import { IsString, IsEmail, IsNotEmpty, Matches, IsJSON, IsObject } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, Matches, IsJSON, IsObject, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IFullName } from '../interface/register.interface';
 import { Type } from 'class-transformer';
+import { Role } from 'src/common/interfaces/common.interface';
 
 export class IFullNameDto {
 	@ApiProperty()
@@ -14,6 +15,7 @@ export class IFullNameDto {
 	@IsNotEmpty()
 	lastName: string;
 }
+
 
 export class RegisterDTO {
 
@@ -40,5 +42,13 @@ export class RegisterDTO {
 	// 	message: 'Password must contain at least 8 characters, including uppercase, lowercase, number and special character',
 	// })
 	password: string;
+
+	@ApiProperty({
+		enum: Role,
+		isArray: true,
+		example: [Role.CUSTOMER, Role.INTERPRETER]
+	})
+	@IsNotEmpty()
+	role: Role;
 }
 
