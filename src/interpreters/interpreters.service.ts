@@ -20,7 +20,7 @@ export class InterpretersService {
   ) { }
 
   async create(createInterpreterDto: CreateInterpreterDto) {
-    const { role = Role.INTERPRETER, languages, description, price, rating, isVerified, userId } = createInterpreterDto;
+    const { role = Role.INTERPRETER, languages, description, price, rating, isVerified = false, userId } = createInterpreterDto;
 
     const interpreter = await this.interpreterRepository.create({
       role,

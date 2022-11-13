@@ -16,6 +16,7 @@ const common_entity_1 = require("../../common/entity/common.entity");
 const common_interface_1 = require("../../common/interfaces/common.interface");
 const interpreter_entity_1 = require("../../interpreters/entities/interpreter.entity");
 const customer_entity_1 = require("../../customers/entities/customer.entity");
+const admin_entity_1 = require("../../admin/entities/admin.entity");
 let User = class User extends common_entity_1.CommonEntity {
     constructor(Partial) {
         super();
@@ -83,6 +84,10 @@ __decorate([
     (0, typeorm_1.OneToOne)(type => customer_entity_1.Customer, customer => customer.user),
     __metadata("design:type", customer_entity_1.Customer)
 ], User.prototype, "customer", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(type => admin_entity_1.Admin, admin => admin.user),
+    __metadata("design:type", admin_entity_1.Admin)
+], User.prototype, "admin", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)(),
     __metadata("design:paramtypes", [Object])

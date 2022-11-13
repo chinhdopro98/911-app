@@ -1,8 +1,10 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login-dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RegisterDTO } from './dto/register-dto';
+import { JwtGuard } from './guard/jwt.guard';
+import { LocalGuard } from './guard/local.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -19,4 +21,5 @@ export class AuthController {
 	async register(@Body(new ValidationPipe()) payload: RegisterDTO) {
 		return await this.authService.register(payload);
 	}
+
 }

@@ -1,10 +1,11 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToOne } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { CommonEntity } from "src/common/entity/common.entity";
-import { Gender, Role } from "src/common/interfaces/common.interface";
+import { Gender } from "src/common/interfaces/common.interface";
 import { IFullName } from "src/auth/interface/register.interface";
 import { Interpreter } from "src/interpreters/entities/interpreter.entity";
 import { Customer } from "src/customers/entities/customer.entity";
+import { Admin } from "src/admin/entities/admin.entity";
 
 @Entity()
 export class User extends CommonEntity {
@@ -58,6 +59,9 @@ export class User extends CommonEntity {
 
 	@OneToOne(type => Customer, customer => customer.user)
 	customer!: Customer;
+
+	@OneToOne(type => Admin, admin => admin.user)
+	admin!: Admin;
 
 	constructor(Partial: Partial<User>) {
 		super();

@@ -15,47 +15,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const customers_service_1 = require("../customers/customers.service");
-const interpreters_service_1 = require("../interpreters/interpreters.service");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 let UsersService = class UsersService {
-    constructor(userRepository, customerService, interpreterService) {
+    constructor(userRepository) {
         this.userRepository = userRepository;
-        this.customerService = customerService;
-        this.interpreterService = interpreterService;
     }
-    async create(createUserDto) {
-        const { fullName, phone, email, password, gender, avatarPath, avatarThumbnailPath } = createUserDto;
-        const user = await this.userRepository.save({
-            fullName,
-            phone,
-            email,
-            password,
-            gender,
-            avatarPath,
-            avatarThumbnailPath,
+    async findAll() {
+        const users = await this.userRepository.find({
+            relations: ['customer', 'interpreter']
         });
+        const result = users.map(user => {
+            const { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt } = user;
+            return { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt };
+        });
+        return result;
     }
-    findAll() {
-        return `This action returns all users`;
-    }
-    findOne(id) {
-        return `This action returns a #${id} user`;
-    }
-    update(id, updateUserDto) {
-        return `This action updates a #${id} user`;
-    }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async findOne(id) {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: ['customer', 'interpreter']
+        });
+        return user;
     }
 };
 UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        customers_service_1.CustomersService,
-        interpreters_service_1.InterpretersService])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

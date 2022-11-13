@@ -9,7 +9,7 @@ async function bootstrap() {
     .setTitle('Interpreters API')
     .setDescription('Interpreters API description')
     .setVersion('1.0')
-    .addTag('Interpreters')
+    // .addTag('Interpreters')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -14,7 +14,7 @@ export class Customer {
 	userId!: string;
 
 	@Column({
-		type: "enum",
+		type: "simple-enum",
 		enum: Role,
 		default: Role.CUSTOMER,
 	})
@@ -25,4 +25,6 @@ export class Customer {
 		name: "userId",
 	})
 	user!: User;
+
+
 }

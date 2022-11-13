@@ -23,6 +23,7 @@
     "migration:create": "typeorm migration:create "
   },
   "dependencies": {
+    "@casl/ability": "^6.3.2",
     "@nestjs/common": "^9.2.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.2.0",

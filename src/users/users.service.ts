@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CustomersService } from 'src/customers/customers.service';
-import { InterpretersService } from 'src/interpreters/interpreters.service';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -13,37 +9,29 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly customerService: CustomersService,
-    private readonly interpreterService: InterpretersService,
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
-    const { fullName, phone, email, password, gender, avatarPath, avatarThumbnailPath } = createUserDto;
 
-    const user = await this.userRepository.save({
-      fullName,
-      phone,
-      email,
-      password,
-      gender,
-      avatarPath,
-      avatarThumbnailPath,
+  async findAll() {
+    const users = await this.userRepository.find({
+      relations: ['customer', 'interpreter']
     });
+    const result = users.map(user => {
+      const { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt } = user;
+      return { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt };
+    });
+    return result;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findOne(id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['customer', 'interpreter']
+    })
+
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }

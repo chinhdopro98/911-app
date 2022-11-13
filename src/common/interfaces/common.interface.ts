@@ -10,3 +10,10 @@ export enum Gender {
 	MALE = 'MALE'
 }
 
+export enum Action {
+	MANAGE = 'MANAGE',
+	CREATE = 'CREATE',
+	READ = 'READ',
+	UPDATE = 'UPDATE',
+	DELETE = 'DELETE'
+}

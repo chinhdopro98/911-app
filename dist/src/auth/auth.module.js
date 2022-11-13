@@ -18,6 +18,8 @@ const jwt_strategy_1 = require("./strategy/jwt.strategy");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../users/entities/user.entity");
 const auth_controller_1 = require("./auth.controller");
+const interpreters_module_1 = require("../interpreters/interpreters.module");
+const customers_module_1 = require("../customers/customers.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -26,6 +28,8 @@ AuthModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             users_module_1.UsersModule,
             passport_1.PassportModule,
+            interpreters_module_1.InterpretersModule,
+            customers_module_1.CustomersModule,
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
                 signOptions: { expiresIn: '180s' },

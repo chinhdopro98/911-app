@@ -9,23 +9,25 @@ export class Interpreter {
 	id: number;
 
 	@Column({
-		type: "enum",
+		type: "simple-enum",
 		enum: Role,
 		default: Role.INTERPRETER,
 	})
 	role: Role;
 
-	@Column()
-	languages: string;
+	@Column({
+		nullable: true,
+	})
+	languages!: string;
 
 	@Column()
-	description: string;
+	description!: string;
 
 	@Column()
-	price: number;
+	price!: number;
 
 	@Column()
-	rating: number;
+	rating!: number;
 
 	@Column({
 		type: "boolean",

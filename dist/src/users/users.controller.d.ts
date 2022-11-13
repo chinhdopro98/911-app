@@ -1,12 +1,17 @@
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
-    create(createUserDto: CreateUserDto): Promise<void>;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateUserDto: UpdateUserDto): string;
-    remove(id: string): string;
+    findAll(): Promise<{
+        id: string;
+        fullName: import("../auth/interface/register.interface").IFullName;
+        phone: string;
+        email: string;
+        gender: import("src/common/interfaces/common.interface").Gender;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date;
+    }[]>;
+    findOne(id: string): Promise<User>;
 }

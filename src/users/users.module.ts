@@ -5,14 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Interpreter } from 'src/interpreters/entities/interpreter.entity';
-import { InterpretersModule } from 'src/interpreters/interpreters.module';
-import { CustomersModule } from 'src/customers/customers.module';
+import { Admin } from 'src/admin/entities/admin.entity';
+import { CaslModule } from 'src/casl/casl.module';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Interpreter, Customer]),
-    InterpretersModule,
-    CustomersModule
+    TypeOrmModule.forFeature([User, Interpreter, Customer, Admin]),
+    CaslModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

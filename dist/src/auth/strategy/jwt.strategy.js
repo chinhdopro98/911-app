@@ -13,10 +13,10 @@ exports.JwtStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
-const passport_local_1 = require("passport-local");
+const passport_jwt_2 = require("passport-jwt");
 require("dotenv/config");
 const auth_service_1 = require("../auth.service");
-let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_local_1.Strategy) {
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_2.Strategy) {
     constructor(authService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -26,7 +26,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this.authService = authService;
     }
     async validate(payload) {
-        return this.authService.validateUser(payload);
+        return await this.authService.validateUser(payload);
     }
 };
 JwtStrategy = __decorate([

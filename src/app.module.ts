@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomersModule } from './customers/customers.module';
 import { InterpretersModule } from './interpreters/interpreters.module';
+import { CaslModule } from './casl/casl.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { InterpretersModule } from './interpreters/interpreters.module';
     UsersModule,
     AuthModule,
     CustomersModule,
-    InterpretersModule
+    InterpretersModule,
+    CaslModule,
+    AdminModule
   ],
   controllers: [AppController],
   providers: [AppService],

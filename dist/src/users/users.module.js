@@ -14,16 +14,15 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const customer_entity_1 = require("../customers/entities/customer.entity");
 const interpreter_entity_1 = require("../interpreters/entities/interpreter.entity");
-const interpreters_module_1 = require("../interpreters/interpreters.module");
-const customers_module_1 = require("../customers/customers.module");
+const admin_entity_1 = require("../admin/entities/admin.entity");
+const casl_module_1 = require("../casl/casl.module");
 let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, interpreter_entity_1.Interpreter, customer_entity_1.Customer]),
-            interpreters_module_1.InterpretersModule,
-            customers_module_1.CustomersModule
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, interpreter_entity_1.Interpreter, customer_entity_1.Customer, admin_entity_1.Admin]),
+            casl_module_1.CaslModule,
         ],
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService],

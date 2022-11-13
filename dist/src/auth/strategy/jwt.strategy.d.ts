@@ -1,4 +1,4 @@
-import { Strategy } from "passport-local";
+import { Strategy } from "passport-jwt";
 import "dotenv/config";
 import { IJwtPayload } from "../interface/jwt-payload.interface";
 import { AuthService } from "../auth.service";

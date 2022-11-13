@@ -6,9 +6,9 @@ export class createTableCustomer1668131925712 implements MigrationInterface {
         await queryRunner.query(`
         CREATE TABLE "customer" (
             "id" SERIAL PRIMARY KEY,
+            "role" "public"."role_enum" NOT NULL DEFAULT 'CUSTOMER',
             "userId" uuid NOT NULL,
-            "role" common_role_enum NOT NULL DEFAULT 'CUSTOMER',
-            constraints "FK_customer_user" foreign key ("userId") references "user" ("id")
+            constraint "customer_userId_fkey" foreign key ("userId") references "user" ("id")
             );
         `)
     }

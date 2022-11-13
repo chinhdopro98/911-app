@@ -3,7 +3,12 @@ import { InterpretersService } from './interpreters.service';
 import { CreateInterpreterDto } from './dto/create-interpreter.dto';
 import { UpdateInterpreterDto } from './dto/update-interpreter.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { Action, Role } from 'src/common/interfaces/common.interface';
+import { Interpreter } from './entities/interpreter.entity';
+import { CheckPolicies } from 'src/casl/casl.decorator';
 
+@ApiTags('interpreter')
 @Controller('interpreters')
 export class InterpretersController {
   constructor(private readonly interpretersService: InterpretersService) { }
@@ -14,6 +19,7 @@ export class InterpretersController {
   // }
 
   @Get("/get-all-interpreter")
+  @CheckPolicies((ability) => ability.can(Action.READ, Interpreter))
   findAll() {
     return this.interpretersService.findAll();
   }

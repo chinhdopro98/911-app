@@ -10,41 +10,54 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const register_dto_1 = require("../../auth/dto/register-dto");
 const common_interface_1 = require("../../common/interfaces/common.interface");
 class CreateUserDto {
 }
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_transformer_1.Type)(() => register_dto_1.IFullNameDto),
     (0, class_validator_1.IsObject)(),
     __metadata("design:type", Object)
 ], CreateUserDto.prototype, "fullName", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "phone", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(common_interface_1.Gender),
+    (0, swagger_1.ApiProperty)({
+        enum: common_interface_1.Gender,
+        isArray: true,
+        example: [common_interface_1.Gender.FEMALE, common_interface_1.Gender.MALE]
+    }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "gender", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "avatarPath", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "avatarThumbnailPath", void 0);

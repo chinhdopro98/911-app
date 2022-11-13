@@ -16,6 +16,8 @@ const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const customers_module_1 = require("./customers/customers.module");
 const interpreters_module_1 = require("./interpreters/interpreters.module");
+const casl_module_1 = require("./casl/casl.module");
+const admin_module_1 = require("./admin/admin.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -28,7 +30,9 @@ AppModule = __decorate([
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             customers_module_1.CustomersModule,
-            interpreters_module_1.InterpretersModule
+            interpreters_module_1.InterpretersModule,
+            casl_module_1.CaslModule,
+            admin_module_1.AdminModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

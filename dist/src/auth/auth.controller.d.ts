@@ -7,6 +7,7 @@ export declare class AuthController {
     login(payload: LoginDTO): Promise<{
         status: import("@nestjs/common").HttpStatus;
         content: string;
+        data: import("../users/entities/user.entity").User;
         accessToken: string;
     }>;
     register(payload: RegisterDTO): Promise<{
