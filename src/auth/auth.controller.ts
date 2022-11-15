@@ -22,4 +22,14 @@ export class AuthController {
 		return await this.authService.register(payload);
 	}
 
+	@Post("/admin/loginWithAdmin")
+	async loginWithAdmin(@Body(new ValidationPipe()) payload: LoginDTO) {
+		return await this.authService.loginWithAdmin(payload);
+	}
+
+	@Post("/admin/registerWithAdmin")
+	async registerWithAdmin(@Body(new ValidationPipe()) payload: RegisterDTO) {
+		return await this.authService.registerWithAdmin(payload);
+	}
+
 }

@@ -6,17 +6,22 @@ import { Repository } from 'typeorm';
 import { IJwtPayload } from './interface/jwt-payload.interface';
 import { ILogin } from './interface/login.interface';
 import { IRegister } from './interface/register.interface';
-import { CustomersService } from 'src/customers/customers.service';
-import { InterpretersService } from 'src/interpreters/interpreters.service';
 import { Role } from 'src/common/interfaces/common.interface';
+import { Customer } from 'src/customers/entities/customer.entity';
+import { Interpreter } from 'src/interpreters/entities/interpreter.entity';
+import { Admin } from 'src/admin/entities/admin.entity';
 @Injectable()
 export class AuthService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
+		@InjectRepository(Customer)
+		private readonly customerRepository: Repository<Customer>,
+		@InjectRepository(Interpreter)
+		private readonly interpreterRepository: Repository<Interpreter>,
+		@InjectRepository(Admin)
+		private readonly adminRepository: Repository<Admin>,
 		private readonly jwtService: JwtService,
-		private readonly customerService: CustomersService,
-		private readonly interpreterService: InterpretersService
 	) { }
 
 	async login(payload: ILogin) {
@@ -34,11 +39,35 @@ export class AuthService {
 			throw new HttpException('Wrong username or password', 401);
 		}
 
-		const jwtPayload: IJwtPayload = { sub: user.id.toString(), email: user.email };
+		const jwtPayload: IJwtPayload = { sub: user.id, email: user.email };
 
 		return {
 			status: HttpStatus.OK,
 			content: 'Login successful',
+			data: user,
+			accessToken: this.jwtService.sign(jwtPayload)
+		};
+	}
+
+	async loginWithAdmin(payload: ILogin) {
+		const { email, password } = payload;
+
+		const user = await this.userRepository.findOne({
+			where: { email },
+			relations: ['admin']
+		});
+
+		const isMatch = await user.validatePassword(password as string);
+
+		if (!isMatch || !user) {
+			throw new HttpException('Wrong username or password', 401);
+		}
+
+		const jwtPayload: IJwtPayload = { sub: user.id.toString(), email: user.email };
+
+		return {
+			status: HttpStatus.OK,
+			content: 'Login admin successful',
 			data: user,
 			accessToken: this.jwtService.sign(jwtPayload)
 		};
@@ -83,14 +112,14 @@ export class AuthService {
 		const idBuilder = await builder.identifiers[0].id;
 
 		if (role === "INTERPRETER") {
-			await this.interpreterService.create({
+			await this.interpreterRepository.create({
 				role: Role.INTERPRETER,
 				userId: idBuilder
 			});
 		}
 
 		if (role === "CUSTOMER") {
-			await this.customerService.create({
+			await this.customerRepository.create({
 				role: Role.CUSTOMER,
 				userId: idBuilder
 			});
@@ -99,6 +128,41 @@ export class AuthService {
 		return {
 			status: HttpStatus.CREATED,
 			content: 'Create user successful'
+		};
+	}
+
+	async registerWithAdmin(payload: IRegister) {
+		const { fullName, phone, email, password, role = Role.ADMIN } = payload;
+
+		const isEmailExits = await this.exitsEmail(email);
+
+		if (isEmailExits) {
+			throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+		}
+
+		const isPhoneExits = await this.exitsPhone(phone);
+		if (isPhoneExits) {
+			throw new HttpException('Phone already exists', HttpStatus.BAD_REQUEST);
+		}
+
+		const user = new User({ fullName, phone, email, password });
+
+		const builder = await this.userRepository.createQueryBuilder("user")
+			.insert()
+			.into(User)
+			.values(user)
+			.execute();
+
+		const idBuilder = await builder.identifiers[0].id;
+
+		await this.adminRepository.create({
+			role: Role.ADMIN,
+			userId: idBuilder
+		});
+
+		return {
+			status: HttpStatus.CREATED,
+			content: 'Create Admin successful'
 		};
 	}
 

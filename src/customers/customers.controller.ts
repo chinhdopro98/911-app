@@ -21,16 +21,20 @@ export class CustomersController {
   }
 
   @UseGuards(JwtGuard)
+  @CheckPolicies((ability) => ability.can(Action.READ, Customer))
   @Get('/get-customer/:id')
   findOne(@Param('id') id: string) {
     return this.customersService.findOne(id);
   }
 
+  @UseGuards(JwtGuard)
   @Patch('/update-customer/:id')
   update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto, updateUserDto: UpdateUserDto) {
     return this.customersService.update(id, updateCustomerDto, updateUserDto);
   }
 
+  @UseGuards(JwtGuard)
+  @CheckPolicies((ability) => ability.can(Action.READ, Customer))
   @Delete('/delete-customer/:id')
   remove(@Param('id') id: string) {
     return this.customersService.remove(id);
