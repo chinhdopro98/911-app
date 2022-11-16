@@ -48,7 +48,7 @@ export class RegisterDTO {
 		isArray: true,
 		example: [Role.CUSTOMER, Role.INTERPRETER]
 	})
-	@IsNotEmpty()
+	// @IsNotEmpty()
 	role: Role;
 }
 

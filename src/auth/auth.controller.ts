@@ -5,6 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RegisterDTO } from './dto/register-dto';
 import { JwtGuard } from './guard/jwt.guard';
 import { LocalGuard } from './guard/local.guard';
+import { PoliciesGuard } from 'src/casl/guard/policy.guard';
 
 @ApiTags('auth')
 @Controller('auth')

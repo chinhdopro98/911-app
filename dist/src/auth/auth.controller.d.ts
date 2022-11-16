@@ -14,4 +14,14 @@ export declare class AuthController {
         status: import("@nestjs/common").HttpStatus;
         content: string;
     }>;
+    loginWithAdmin(payload: LoginDTO): Promise<{
+        status: import("@nestjs/common").HttpStatus;
+        content: string;
+        data: import("../users/entities/user.entity").User;
+        accessToken: string;
+    }>;
+    registerWithAdmin(payload: RegisterDTO): Promise<{
+        status: import("@nestjs/common").HttpStatus;
+        content: string;
+    }>;
 }

@@ -7,21 +7,19 @@ import { CheckPolicies } from 'src/casl/casl.decorator';
 import { Action } from 'src/common/interfaces/common.interface';
 import { User } from './entities/user.entity';
 
-@ApiTags('user')
+@ApiTags('admin-[user]')
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  @UseGuards(JwtGuard)
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies((ability) => ability.can(Action.READ, User))
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @CheckPolicies((ability) => ability.can(Action.MANAGE, User))
   @Get("/get-all-users")
   findAll() {
     return this.usersService.findAll();
   }
 
-  @UseGuards(JwtGuard)
-  @UseGuards(PoliciesGuard)
+  @UseGuards(JwtGuard, PoliciesGuard)
   @CheckPolicies((ability) => ability.can(Action.READ, User))
   @Get('/get-user/:id')
   findOne(@Param('id') id: string) {

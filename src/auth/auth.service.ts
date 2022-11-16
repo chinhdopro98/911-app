@@ -34,13 +34,13 @@ export class AuthService {
 
 		const isMatch = await user.validatePassword(password as string);
 
+		const isAdmin = await this.isAdmin(user.id);
 
-		if (!isMatch || !user) {
+		if (!isMatch || !user || isAdmin) {
 			throw new HttpException('Wrong username or password', 401);
 		}
 
 		const jwtPayload: IJwtPayload = { sub: user.id, email: user.email };
-
 		return {
 			status: HttpStatus.OK,
 			content: 'Login successful',
@@ -57,14 +57,14 @@ export class AuthService {
 			relations: ['admin']
 		});
 
+		const isAdmin = await this.isAdmin(user.id);
+
 		const isMatch = await user.validatePassword(password as string);
 
-		if (!isMatch || !user) {
+		if (!isMatch || !user || !isAdmin) {
 			throw new HttpException('Wrong username or password', 401);
 		}
-
-		const jwtPayload: IJwtPayload = { sub: user.id.toString(), email: user.email };
-
+		const jwtPayload: IJwtPayload = { sub: user.id, email: user.email };
 		return {
 			status: HttpStatus.OK,
 			content: 'Login admin successful',
@@ -83,6 +83,16 @@ export class AuthService {
 	async exitsPhone(phone: string): Promise<boolean> {
 		const user = await this.userRepository.findOne({
 			where: { phone }
+		});
+		return !!user;
+	}
+
+	async isAdmin(userId: string) {
+		const user = await this.adminRepository.findOne({
+			where: {
+				userId,
+				role: Role.ADMIN
+			}
 		});
 		return !!user;
 	}
@@ -155,10 +165,15 @@ export class AuthService {
 
 		const idBuilder = await builder.identifiers[0].id;
 
-		await this.adminRepository.create({
-			role: Role.ADMIN,
-			userId: idBuilder
-		});
+		await this.adminRepository.createQueryBuilder("admin")
+			.insert()
+			.into(Admin)
+			.values({
+				role: Role.ADMIN,
+				userId: idBuilder
+			})
+			.execute();
+
 
 		return {
 			status: HttpStatus.CREATED,

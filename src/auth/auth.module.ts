@@ -12,15 +12,17 @@ import { AuthController } from './auth.controller';
 import { Interpreter } from 'src/interpreters/entities/interpreter.entity';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Admin } from 'src/admin/entities/admin.entity';
+import { CaslModule } from 'src/casl/casl.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Interpreter, Customer, Admin]),
     UsersModule,
     PassportModule,
+    CaslModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '180s' },
-    })
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],

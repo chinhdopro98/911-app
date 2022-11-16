@@ -28,6 +28,12 @@ let AuthController = class AuthController {
     async register(payload) {
         return await this.authService.register(payload);
     }
+    async loginWithAdmin(payload) {
+        return await this.authService.loginWithAdmin(payload);
+    }
+    async registerWithAdmin(payload) {
+        return await this.authService.registerWithAdmin(payload);
+    }
 };
 __decorate([
     (0, common_1.Post)('login'),
@@ -43,6 +49,20 @@ __decorate([
     __metadata("design:paramtypes", [register_dto_1.RegisterDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)("/admin/loginWithAdmin"),
+    __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_dto_1.LoginDTO]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "loginWithAdmin", null);
+__decorate([
+    (0, common_1.Post)("/admin/registerWithAdmin"),
+    __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [register_dto_1.RegisterDTO]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "registerWithAdmin", null);
 AuthController = __decorate([
     (0, swagger_1.ApiTags)('auth'),
     (0, common_1.Controller)('auth'),

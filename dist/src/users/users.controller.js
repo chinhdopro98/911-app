@@ -33,17 +33,15 @@ let UsersController = class UsersController {
     }
 };
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
-    (0, common_1.UseGuards)(policy_guard_1.PoliciesGuard),
-    (0, casl_decorator_1.CheckPolicies)((ability) => ability.can(common_interface_1.Action.READ, user_entity_1.User)),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, policy_guard_1.PoliciesGuard),
+    (0, casl_decorator_1.CheckPolicies)((ability) => ability.can(common_interface_1.Action.MANAGE, user_entity_1.User)),
     (0, common_1.Get)("/get-all-users"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
-    (0, common_1.UseGuards)(policy_guard_1.PoliciesGuard),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, policy_guard_1.PoliciesGuard),
     (0, casl_decorator_1.CheckPolicies)((ability) => ability.can(common_interface_1.Action.READ, user_entity_1.User)),
     (0, common_1.Get)('/get-user/:id'),
     __param(0, (0, common_1.Param)('id')),
@@ -52,7 +50,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findOne", null);
 UsersController = __decorate([
-    (0, swagger_1.ApiTags)('user'),
+    (0, swagger_1.ApiTags)('admin-[user]'),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);

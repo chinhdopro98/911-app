@@ -61,7 +61,6 @@ __decorate([
         isArray: true,
         example: [common_interface_1.Role.CUSTOMER, common_interface_1.Role.INTERPRETER]
     }),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDTO.prototype, "role", void 0);
 exports.RegisterDTO = RegisterDTO;

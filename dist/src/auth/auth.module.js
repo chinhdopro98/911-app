@@ -18,22 +18,23 @@ const jwt_strategy_1 = require("./strategy/jwt.strategy");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../users/entities/user.entity");
 const auth_controller_1 = require("./auth.controller");
-const interpreters_module_1 = require("../interpreters/interpreters.module");
-const customers_module_1 = require("../customers/customers.module");
+const interpreter_entity_1 = require("../interpreters/entities/interpreter.entity");
+const customer_entity_1 = require("../customers/entities/customer.entity");
+const admin_entity_1 = require("../admin/entities/admin.entity");
+const casl_module_1 = require("../casl/casl.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, interpreter_entity_1.Interpreter, customer_entity_1.Customer, admin_entity_1.Admin]),
             users_module_1.UsersModule,
             passport_1.PassportModule,
-            interpreters_module_1.InterpretersModule,
-            customers_module_1.CustomersModule,
+            casl_module_1.CaslModule,
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
                 signOptions: { expiresIn: '180s' },
-            })
+            }),
         ],
         providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy],
         exports: [auth_service_1.AuthService],
