@@ -98,10 +98,9 @@ export class AuthService {
 	}
 
 	async register(payload: IRegister) {
-		const { fullName, phone, email, password, role = Role.CUSTOMER } = payload;
+		const { fullName, phone, email, password, role } = payload;
 
 		const isEmailExits = await this.exitsEmail(email);
-
 		if (isEmailExits) {
 			throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
 		}
@@ -121,19 +120,11 @@ export class AuthService {
 
 		const idBuilder = await builder.identifiers[0].id;
 
-		if (role === "INTERPRETER") {
-			await this.interpreterRepository.create({
-				role: Role.INTERPRETER,
-				userId: idBuilder
-			});
-		}
+		Array.isArray(role) ? role.forEach(async (item) => {
+			item === Role.CUSTOMER && await this.customerRepository.insert({ userId: idBuilder, role: item });
+			item === Role.INTERPRETER && await this.interpreterRepository.insert({ userId: idBuilder, role: item });
+		}) : await this.customerRepository.insert({ userId: idBuilder, role: Role.CUSTOMER });
 
-		if (role === "CUSTOMER") {
-			await this.customerRepository.create({
-				role: Role.CUSTOMER,
-				userId: idBuilder
-			});
-		}
 
 		return {
 			status: HttpStatus.CREATED,
@@ -190,7 +181,7 @@ export class AuthService {
 			}
 		});
 		if (!user) {
-			throw new HttpException('Invalid token', 401);
+			throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
 		}
 		return user;
 	}

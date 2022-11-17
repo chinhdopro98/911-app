@@ -25,10 +25,12 @@ let UsersService = class UsersService {
         const users = await this.userRepository.find({
             relations: ['customer', 'interpreter']
         });
-        const result = users.map(user => {
-            const { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt } = user;
-            return { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt };
-        });
+        if (!users) {
+            throw new common_1.HttpException('No user found', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const result = users.reduce((acc, user) => {
+            return (user.customer === null && user.interpreter === null) ? [...acc] : [...acc, user];
+        }, []);
         return result;
     }
     async findOne(id) {
@@ -37,6 +39,30 @@ let UsersService = class UsersService {
             relations: ['customer', 'interpreter']
         });
         return user;
+    }
+    async findAllCustomers() {
+        const customers = await this.userRepository.find({
+            relations: ['customer']
+        });
+        if (!customers) {
+            throw new common_1.HttpException('No customer found', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const result = customers.map(customer => {
+            return customer;
+        });
+        return result;
+    }
+    async findAllInterpreters() {
+        const interpreters = await this.userRepository.find({
+            relations: ['interpreter']
+        });
+        if (!interpreters) {
+            throw new common_1.HttpException('No interpreter found', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const result = interpreters.map(interpreter => {
+            return interpreter;
+        });
+        return result;
     }
 };
 UsersService = __decorate([

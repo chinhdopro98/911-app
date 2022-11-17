@@ -31,6 +31,12 @@ let UsersController = class UsersController {
     findOne(id) {
         return this.usersService.findOne(id);
     }
+    findAllCustomers() {
+        return this.usersService.findAllCustomers();
+    }
+    findAllInterpreters() {
+        return this.usersService.findAllInterpreters();
+    }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, policy_guard_1.PoliciesGuard),
@@ -49,6 +55,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, policy_guard_1.PoliciesGuard),
+    (0, casl_decorator_1.CheckPolicies)((ability) => ability.can(common_interface_1.Action.READ, user_entity_1.User)),
+    (0, common_1.Get)('/get-all-customers'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findAllCustomers", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard, policy_guard_1.PoliciesGuard),
+    (0, casl_decorator_1.CheckPolicies)((ability) => ability.can(common_interface_1.Action.READ, user_entity_1.User)),
+    (0, common_1.Get)('/get-all-interpreters'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findAllInterpreters", null);
 UsersController = __decorate([
     (0, swagger_1.ApiTags)('admin-[user]'),
     (0, common_1.Controller)('user'),

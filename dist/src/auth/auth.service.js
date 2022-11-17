@@ -90,7 +90,7 @@ let AuthService = class AuthService {
         return !!user;
     }
     async register(payload) {
-        const { fullName, phone, email, password, role = common_interface_1.Role.CUSTOMER } = payload;
+        const { fullName, phone, email, password, role } = payload;
         const isEmailExits = await this.exitsEmail(email);
         if (isEmailExits) {
             throw new common_1.HttpException('Email already exists', common_1.HttpStatus.BAD_REQUEST);
@@ -106,18 +106,10 @@ let AuthService = class AuthService {
             .values(user)
             .execute();
         const idBuilder = await builder.identifiers[0].id;
-        if (role === "INTERPRETER") {
-            await this.interpreterRepository.create({
-                role: common_interface_1.Role.INTERPRETER,
-                userId: idBuilder
-            });
-        }
-        if (role === "CUSTOMER") {
-            await this.customerRepository.create({
-                role: common_interface_1.Role.CUSTOMER,
-                userId: idBuilder
-            });
-        }
+        Array.isArray(role) ? role.forEach(async (item) => {
+            item === common_interface_1.Role.CUSTOMER && await this.customerRepository.insert({ userId: idBuilder, role: item });
+            item === common_interface_1.Role.INTERPRETER && await this.interpreterRepository.insert({ userId: idBuilder, role: item });
+        }) : await this.customerRepository.insert({ userId: idBuilder, role: common_interface_1.Role.CUSTOMER });
         return {
             status: common_1.HttpStatus.CREATED,
             content: 'Create user successful'
@@ -162,7 +154,7 @@ let AuthService = class AuthService {
             }
         });
         if (!user) {
-            throw new common_1.HttpException('Invalid token', 401);
+            throw new common_1.HttpException('Invalid token', common_1.HttpStatus.UNAUTHORIZED);
         }
         return user;
     }

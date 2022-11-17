@@ -26,5 +26,19 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @CheckPolicies((ability) => ability.can(Action.READ, User))
+  @Get('/get-all-customers')
+  findAllCustomers() {
+    return this.usersService.findAllCustomers();
+  }
+
+  @UseGuards(JwtGuard, PoliciesGuard)
+  @CheckPolicies((ability) => ability.can(Action.READ, User))
+  @Get('/get-all-interpreters')
+  findAllInterpreters() {
+    return this.usersService.findAllInterpreters();
+  }
+
 
 }

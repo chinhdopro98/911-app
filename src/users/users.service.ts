@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -16,10 +16,16 @@ export class UsersService {
     const users = await this.userRepository.find({
       relations: ['customer', 'interpreter']
     });
-    const result = users.map(user => {
-      const { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt } = user;
-      return { id, fullName, phone, email, gender, createdAt, updatedAt, deletedAt };
-    });
+
+
+    if (!users) {
+      throw new HttpException('No user found', HttpStatus.BAD_REQUEST);
+    }
+
+    const result = users.reduce((acc, user) => {
+      return (user.customer === null && user.interpreter === null) ? [...acc] : [...acc, user];
+    }, [] as User[])
+
     return result;
   }
 
@@ -30,6 +36,38 @@ export class UsersService {
     })
 
     return user;
+  }
+
+  async findAllCustomers() {
+    const customers = await this.userRepository.find({
+      relations: ['customer']
+    });
+
+    if (!customers) {
+      throw new HttpException('No customer found', HttpStatus.BAD_REQUEST);
+    }
+
+    const result = customers.map(customer => {
+      return customer;
+    });
+
+    return result;
+  }
+
+  async findAllInterpreters() {
+    const interpreters = await this.userRepository.find({
+      relations: ['interpreter']
+    });
+
+    if (!interpreters) {
+      throw new HttpException('No interpreter found', HttpStatus.BAD_REQUEST);
+    }
+
+    const result = interpreters.map(interpreter => {
+      return interpreter;
+    });
+
+    return result;
   }
 
 
