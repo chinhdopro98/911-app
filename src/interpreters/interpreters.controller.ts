@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { InterpretersService } from './interpreters.service';
 import { CreateInterpreterDto } from './dto/create-interpreter.dto';
 import { UpdateInterpreterDto } from './dto/update-interpreter.dto';
@@ -12,7 +21,7 @@ import { JwtGuard } from 'src/auth/guard/jwt.guard';
 @ApiTags('interpreter')
 @Controller('interpreters')
 export class InterpretersController {
-  constructor(private readonly interpretersService: InterpretersService) { }
+  constructor(private readonly interpretersService: InterpretersService) {}
 
   // @Post()
   // create(@Body() createInterpreterDto: CreateInterpreterDto) {
@@ -21,7 +30,7 @@ export class InterpretersController {
 
   @UseGuards(JwtGuard)
   @CheckPolicies((ability) => ability.can(Action.READ, Interpreter))
-  @Get("/get-all-interpreter")
+  @Get('/get-all-interpreter')
   findAll() {
     return this.interpretersService.findAll();
   }
@@ -34,8 +43,16 @@ export class InterpretersController {
 
   @UseGuards(JwtGuard)
   @Patch('/update-interpreter/:id')
-  update(@Param('id') id: string, @Body() updateInterpreterDto: UpdateInterpreterDto, updateUserDto: UpdateUserDto) {
-    return this.interpretersService.update(id, updateInterpreterDto, updateUserDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateInterpreterDto: UpdateInterpreterDto,
+    updateUserDto: UpdateUserDto,
+  ) {
+    return this.interpretersService.update(
+      id,
+      updateInterpreterDto,
+      updateUserDto,
+    );
   }
 
   @UseGuards(JwtGuard)

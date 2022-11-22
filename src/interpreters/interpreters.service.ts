@@ -10,17 +10,24 @@ import { Interpreter } from './entities/interpreter.entity';
 
 @Injectable()
 export class InterpretersService {
-
   constructor(
     @InjectRepository(Interpreter)
     private readonly interpreterRepository: Repository<Interpreter>,
 
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) { }
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async create(createInterpreterDto: CreateInterpreterDto) {
-    const { role = Role.INTERPRETER, languages, description, price, rating, isVerified = false, userId } = createInterpreterDto;
+    const {
+      role = Role.INTERPRETER,
+      languages,
+      description,
+      price,
+      rating,
+      isVerified = false,
+      userId,
+    } = createInterpreterDto;
 
     const interpreter = await this.interpreterRepository.create({
       role,
@@ -29,15 +36,15 @@ export class InterpretersService {
       price,
       rating,
       isVerified,
-      userId
-    })
+      userId,
+    });
 
     return await this.interpreterRepository.save(interpreter);
   }
 
   async findAll() {
     const interpreters = await this.userRepository.find({
-      relations: ['interpreter']
+      relations: ['interpreter'],
     });
 
     return interpreters;
@@ -48,48 +55,58 @@ export class InterpretersService {
       where: {
         id: userId,
       },
-      relations: ['interpreter']
+      relations: ['interpreter'],
     });
 
     return interpreter;
   }
 
-  async update(userId: string, updateInterpreterDto: UpdateInterpreterDto, updateUserDto: UpdateUserDto) {
-    await this.userRepository.createQueryBuilder("user")
+  async update(
+    userId: string,
+    updateInterpreterDto: UpdateInterpreterDto,
+    updateUserDto: UpdateUserDto,
+  ) {
+    await this.userRepository
+      .createQueryBuilder('user')
       .update(User)
       .set(updateUserDto)
-      .where("id = :id", { id: userId })
+      .where('id = :id', { id: userId })
       .execute();
 
-    await this.interpreterRepository.createQueryBuilder("interpreter")
+    await this.interpreterRepository
+      .createQueryBuilder('interpreter')
       .update(Interpreter)
       .set(updateInterpreterDto)
-      .where("userId = :userId", { userId })
+      .where('userId = :userId', { userId })
       .execute();
 
     const userUpdated = await this.userRepository.findOne({
       where: {
         id: userId,
       },
-      relations: ['interpreter']
+      relations: ['interpreter'],
     });
 
-    return { status: HttpStatus.OK, message: `Interpreter ${userUpdated} updated successfully` };
-
+    return {
+      status: HttpStatus.OK,
+      message: `Interpreter ${userUpdated} updated successfully`,
+    };
   }
 
   async remove(userId: string) {
-    await this.interpreterRepository.createQueryBuilder("interpreter")
+    await this.interpreterRepository
+      .createQueryBuilder('interpreter')
 
       .delete()
-      .where("userId = :userId", { userId })
+      .where('userId = :userId', { userId })
       .execute();
 
-    await this.userRepository.createQueryBuilder("user")
+    await this.userRepository
+      .createQueryBuilder('user')
       .delete()
-      .where("id = :id", { id: userId })
+      .where('id = :id', { id: userId })
       .execute();
 
-    return { message: "Deleted successfully" };
+    return { message: 'Deleted successfully' };
   }
 }

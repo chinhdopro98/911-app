@@ -18,6 +18,8 @@ const customers_module_1 = require("./customers/customers.module");
 const interpreters_module_1 = require("./interpreters/interpreters.module");
 const casl_module_1 = require("./casl/casl.module");
 const admin_module_1 = require("./admin/admin.module");
+const interpreterlanguage_module_1 = require("./interpreterlanguage/interpreterlanguage.module");
+const languages_module_1 = require("./languages/languages.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -32,7 +34,9 @@ AppModule = __decorate([
             customers_module_1.CustomersModule,
             interpreters_module_1.InterpretersModule,
             casl_module_1.CaslModule,
-            admin_module_1.AdminModule
+            admin_module_1.AdminModule,
+            languages_module_1.LanguagesModule,
+            interpreterlanguage_module_1.InterpreterlanguageModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
